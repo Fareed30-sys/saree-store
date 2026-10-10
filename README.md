@@ -119,7 +119,8 @@ button {
 .primary-btn,
 .secondary-btn,
 .ghost-btn,
-.card-btn {
+.card-btn,
+.filter-btn {
   border-radius: 999px;
   padding: 0.9rem 1.3rem;
   font-weight: 600;
@@ -134,7 +135,8 @@ button {
 }
 
 .secondary-btn,
-.ghost-btn {
+.ghost-btn,
+.filter-btn {
   background: rgba(255, 255, 255, 0.6);
   border: 1px solid rgba(34, 25, 21, 0.08);
   color: var(--text);
@@ -143,7 +145,8 @@ button {
 .primary-btn:hover,
 .secondary-btn:hover,
 .ghost-btn:hover,
-.card-btn:hover {
+.card-btn:hover,
+.filter-btn:hover {
   transform: translateY(-1px);
 }
 
@@ -289,38 +292,27 @@ button {
   padding-top: 50px;
 }
 
-.category-grid,
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.filter-btn {
+  min-width: 110px;
+}
+
+.filter-btn.active {
+  background: linear-gradient(135deg, #2a1a18, #5a372e);
+  color: white;
+  box-shadow: 0 12px 22px rgba(56, 33, 28, 0.18);
+}
+
 .product-grid,
 .testimonial-grid {
   display: grid;
   gap: 24px;
-}
-
-.category-grid {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
-.category-card {
-  border-radius: 28px;
-  min-height: 180px;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  font-size: 1.3rem;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
-}
-
-.category-card strong {
-  margin-top: 8px;
-  font-size: 1.1rem;
-}
-
-.split-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: end;
-  gap: 20px;
 }
 
 .product-grid {
@@ -496,11 +488,17 @@ button {
   padding: 0.95rem 1rem;
 }
 
+.split-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 20px;
+}
+
 @media (max-width: 1024px) {
   .hero-section,
   .craft-section,
-  .product-grid,
-  .category-grid {
+  .product-grid {
     grid-template-columns: 1fr 1fr;
   }
 
@@ -536,7 +534,6 @@ button {
   .hero-section,
   .craft-section,
   .product-grid,
-  .category-grid,
   .testimonial-grid {
     grid-template-columns: 1fr;
   }

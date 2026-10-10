@@ -1,46 +1,61 @@
-const categories = [
-  { name: 'Bridal', accent: '#f6d7d2' },
-  { name: 'Festive', accent: '#d9c8f5' },
-  { name: 'Silk', accent: '#f9e9c7' },
-  { name: 'Pastels', accent: '#d9efd9' },
-];
+import { useState } from 'react';
+
+const categories = ['All', 'Bridal', 'Festive', 'Silk', 'Pastels'];
 
 const products = [
   {
     id: 1,
     name: 'Rose Gold Banarasi',
     price: 4890,
-    image:
-      'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=900&q=80',
+    image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=900&q=80',
     tag: 'Best Seller',
     palette: 'Blush & Gold',
+    category: 'Bridal',
   },
   {
     id: 2,
     name: 'Emerald Regal Weave',
     price: 5390,
-    image:
-      'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=80',
+    image: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=80',
     tag: 'New Arrival',
     palette: 'Emerald Silk',
+    category: 'Festive',
   },
   {
     id: 3,
     name: 'Ivory Moonlight',
     price: 4190,
-    image:
-      'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=900&q=80',
+    image: 'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=900&q=80',
     tag: 'Limited Edit',
     palette: 'Ivory Lace',
+    category: 'Pastels',
   },
   {
     id: 4,
     name: 'Saffron Heritage',
     price: 4690,
-    image:
-      'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=900&q=80',
+    image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=900&q=80',
     tag: 'Festive Pick',
     palette: 'Saffron Glow',
+    category: 'Festive',
+  },
+  {
+    id: 5,
+    name: 'Velvet Pearl Silk',
+    price: 5590,
+    image: 'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1200&q=80',
+    tag: 'Signature',
+    palette: 'Pearl Satin',
+    category: 'Silk',
+  },
+  {
+    id: 6,
+    name: 'Blush Aura Drape',
+    price: 3990,
+    image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=1200&q=80',
+    tag: 'Editor’s Pick',
+    palette: 'Rose Mist',
+    category: 'Pastels',
   },
 ];
 
@@ -61,17 +76,25 @@ const features = [
 const testimonials = [
   {
     name: 'Aisha Kapoor',
-    quote:
-      'The craftsmanship felt like heirloom luxury. My wedding saree looked breathtaking in every frame.',
+    quote: 'The craftsmanship felt like heirloom luxury. My wedding saree looked breathtaking in every frame.',
   },
   {
     name: 'Meher Shah',
-    quote:
-      'Velora helped me select a festive drape that felt elegant, modern, and unbelievably rich in texture.',
+    quote: 'Velora helped me select a festive drape that felt elegant, modern, and unbelievably rich in texture.',
   },
 ];
 
 function App() {
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [cartCount, setCartCount] = useState(2);
+
+  const filteredProducts =
+    selectedCategory === 'All'
+      ? products
+      : products.filter((product) => product.category === selectedCategory);
+
+  const addToBag = () => setCartCount((count) => count + 1);
+
   return (
     <div className="page-shell">
       <header className="topbar">
@@ -92,7 +115,7 @@ function App() {
 
         <div className="nav-actions">
           <button className="ghost-btn">Search</button>
-          <button className="primary-btn">Bag (2)</button>
+          <button className="primary-btn">Bag ({cartCount})</button>
         </div>
       </header>
 
@@ -145,12 +168,16 @@ function App() {
             <h2>Our signature collections</h2>
           </div>
 
-          <div className="category-grid">
+          <div className="filter-row">
             {categories.map((category) => (
-              <div key={category.name} className="category-card" style={{ background: category.accent }}>
-                <span>{category.name}</span>
-                <strong>Explore</strong>
-              </div>
+              <button
+                key={category}
+                type="button"
+                className={selectedCategory === category ? 'filter-btn active' : 'filter-btn'}
+                onClick={() => setSelectedCategory(category)}
+              >
+                {category}
+              </button>
             ))}
           </div>
         </section>
@@ -165,7 +192,7 @@ function App() {
           </div>
 
           <div className="product-grid">
-            {products.map((product) => (
+            {filteredProducts.map((product) => (
               <article key={product.id} className="product-card">
                 <div className="product-media">
                   <img src={product.image} alt={product.name} />
@@ -177,7 +204,7 @@ function App() {
                     <strong>₹{product.price.toLocaleString('en-IN')}</strong>
                   </div>
                   <h3>{product.name}</h3>
-                  <button className="card-btn">Add to bag</button>
+                  <button className="card-btn" onClick={addToBag}>Add to bag</button>
                 </div>
               </article>
             ))}
@@ -200,10 +227,7 @@ function App() {
           </div>
 
           <div className="craft-image-panel">
-            <img
-              src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1000&q=80"
-              alt="Luxury saree detail"
-            />
+            <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1000&q=80" alt="Luxury saree detail" />
           </div>
         </section>
 

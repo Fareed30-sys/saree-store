@@ -1,0 +1,245 @@
+const categories = [
+  { name: 'Bridal', accent: '#f6d7d2' },
+  { name: 'Festive', accent: '#d9c8f5' },
+  { name: 'Silk', accent: '#f9e9c7' },
+  { name: 'Pastels', accent: '#d9efd9' },
+];
+
+const products = [
+  {
+    id: 1,
+    name: 'Rose Gold Banarasi',
+    price: 4890,
+    image:
+      'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=900&q=80',
+    tag: 'Best Seller',
+    palette: 'Blush & Gold',
+  },
+  {
+    id: 2,
+    name: 'Emerald Regal Weave',
+    price: 5390,
+    image:
+      'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=80',
+    tag: 'New Arrival',
+    palette: 'Emerald Silk',
+  },
+  {
+    id: 3,
+    name: 'Ivory Moonlight',
+    price: 4190,
+    image:
+      'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=900&q=80',
+    tag: 'Limited Edit',
+    palette: 'Ivory Lace',
+  },
+  {
+    id: 4,
+    name: 'Saffron Heritage',
+    price: 4690,
+    image:
+      'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=900&q=80',
+    tag: 'Festive Pick',
+    palette: 'Saffron Glow',
+  },
+];
+
+const stats = [
+  { value: '2500+', label: 'happy brides' },
+  { value: '18k', label: 'sarees curated' },
+  { value: '4.9/5', label: 'client rating' },
+  { value: '48h', label: 'dispatch promise' },
+];
+
+const features = [
+  'Handpicked premium fabrics',
+  'Ethically woven craftsmanship',
+  'Personal styling assistance',
+  'Secure worldwide delivery',
+];
+
+const testimonials = [
+  {
+    name: 'Aisha Kapoor',
+    quote:
+      'The craftsmanship felt like heirloom luxury. My wedding saree looked breathtaking in every frame.',
+  },
+  {
+    name: 'Meher Shah',
+    quote:
+      'Velora helped me select a festive drape that felt elegant, modern, and unbelievably rich in texture.',
+  },
+];
+
+function App() {
+  return (
+    <div className="page-shell">
+      <header className="topbar">
+        <div className="brand-wrap">
+          <div className="brand-mark">V</div>
+          <div>
+            <p className="brand-name">Velora</p>
+            <span className="brand-sub">Sarees & Studio</span>
+          </div>
+        </div>
+
+        <nav className="nav">
+          <a href="#collections">Collections</a>
+          <a href="#craft">Craft</a>
+          <a href="#reviews">Reviews</a>
+          <a href="#contact">Contact</a>
+        </nav>
+
+        <div className="nav-actions">
+          <button className="ghost-btn">Search</button>
+          <button className="primary-btn">Bag (2)</button>
+        </div>
+      </header>
+
+      <main>
+        <section className="hero-section">
+          <div className="hero-copy">
+            <span className="eyebrow">Curated for celebration</span>
+            <h1>Modern luxury in every drape.</h1>
+            <p>
+              Discover festival-ready sarees designed with rich textures, handcrafted details,
+              and a contemporary elegance that turns every occasion into a statement.
+            </p>
+
+            <div className="cta-row">
+              <button className="primary-btn">Shop Collection</button>
+              <button className="secondary-btn">Book Styling</button>
+            </div>
+
+            <div className="hero-stats">
+              {stats.map((stat) => (
+                <div key={stat.label} className="stat-box">
+                  <strong>{stat.value}</strong>
+                  <span>{stat.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="hero-visual">
+            <div className="floating-card card-one">
+              <span>Festive Luxe</span>
+              <strong>Handwoven silk</strong>
+            </div>
+            <div className="hero-image-wrap">
+              <img
+                src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1200&q=80"
+                alt="Woman wearing luxury saree"
+              />
+            </div>
+            <div className="floating-card card-two">
+              <span>New Launch</span>
+              <strong>Golden Hour Edit</strong>
+            </div>
+          </div>
+        </section>
+
+        <section className="category-section" id="collections">
+          <div className="section-heading">
+            <span className="eyebrow">Browse by mood</span>
+            <h2>Our signature collections</h2>
+          </div>
+
+          <div className="category-grid">
+            {categories.map((category) => (
+              <div key={category.name} className="category-card" style={{ background: category.accent }}>
+                <span>{category.name}</span>
+                <strong>Explore</strong>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="product-section">
+          <div className="section-heading split-heading">
+            <div>
+              <span className="eyebrow">Most loved</span>
+              <h2>Festival essentials</h2>
+            </div>
+            <a href="#" className="text-link">View all</a>
+          </div>
+
+          <div className="product-grid">
+            {products.map((product) => (
+              <article key={product.id} className="product-card">
+                <div className="product-media">
+                  <img src={product.image} alt={product.name} />
+                  <span className="product-badge">{product.tag}</span>
+                </div>
+                <div className="product-info">
+                  <div className="meta-row">
+                    <span>{product.palette}</span>
+                    <strong>₹{product.price.toLocaleString('en-IN')}</strong>
+                  </div>
+                  <h3>{product.name}</h3>
+                  <button className="card-btn">Add to bag</button>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="craft-section" id="craft">
+          <div className="craft-copy">
+            <span className="eyebrow">Crafted for occasions</span>
+            <h2>Timeless artistry with a modern silhouette.</h2>
+            <p>
+              Each veil of fabric is traced with precision, rich zari detailing, and a luxurious fall
+              designed to move beautifully from festive gatherings to intimate evening celebrations.
+            </p>
+            <ul>
+              {features.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="craft-image-panel">
+            <img
+              src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1000&q=80"
+              alt="Luxury saree detail"
+            />
+          </div>
+        </section>
+
+        <section className="testimonial-section" id="reviews">
+          <div className="section-heading">
+            <span className="eyebrow">Style stories</span>
+            <h2>What clients say</h2>
+          </div>
+
+          <div className="testimonial-grid">
+            {testimonials.map((item) => (
+              <blockquote key={item.name} className="testimonial-card">
+                <p>“{item.quote}”</p>
+                <footer>{item.name}</footer>
+              </blockquote>
+            ))}
+          </div>
+        </section>
+      </main>
+
+      <footer className="footer" id="contact">
+        <div className="footer-brand">
+          <p className="brand-name">Velora</p>
+          <span>Luxury sarees for every celebration.</span>
+        </div>
+
+        <div className="newsletter-box">
+          <label>Get festival style updates</label>
+          <div className="newsletter-form">
+            <input type="email" placeholder="Email address" />
+            <button className="primary-btn">Join</button>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+export default App;

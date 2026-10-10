@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 const categories = ['All', 'Bridal', 'Festive', 'Silk', 'Pastels'];
 
@@ -86,14 +86,57 @@ const testimonials = [
 
 function App() {
   const [selectedCategory, setSelectedCategory] = useState('All');
-  const [cartCount, setCartCount] = useState(2);
+  const [cartOpen, setCartOpen] = useState(false);
+  const [cart, setCart] = useState([
+    { id: 1, name: 'Rose Gold Banarasi', price: 4890, qty: 1, image: products[0].image },
+  ]);
 
   const filteredProducts =
     selectedCategory === 'All'
       ? products
       : products.filter((product) => product.category === selectedCategory);
 
-  const addToBag = () => setCartCount((count) => count + 1);
+  const cartCount = useMemo(
+    () => cart.reduce((sum, item) => sum + item.qty, 0),
+    [cart]
+  );
+
+  const subtotal = useMemo(
+    () => cart.reduce((sum, item) => sum + item.price * item.qty, 0),
+    [cart]
+  );
+
+  const shipping = subtotal > 0 ? 299 : 0;
+  const total = subtotal + shipping;
+
+  const addToBag = (product) => {
+    setCart((current) => {
+      const found = current.find((item) => item.id === product.id);
+      if (found) {
+        return current.map((item) =>
+          item.id === product.id ? { ...item, qty: item.qty + 1 } : item
+        );
+      }
+      return [...current, { ...product, qty: 1, image: product.image }];
+    });
+    setCartOpen(true);
+  };
+
+  const changeQty = (id, delta) => {
+    setCart((current) =>
+      current
+        .map((item) =>
+          item.id === id ? { ...item, qty: Math.max(0, item.qty + delta) } : item
+        )
+        .filter((item) => item.qty > 0)
+    );
+  };
+
+  const handleCheckout = () => {
+    alert('Your order has been placed successfully!');
+    setCart([]);
+    setCartOpen(false);
+  };
 
   return (
     <div className="page-shell">
@@ -115,7 +158,9 @@ function App() {
 
         <div className="nav-actions">
           <button className="ghost-btn">Search</button>
-          <button className="primary-btn">Bag ({cartCount})</button>
+          <button className="primary-btn" onClick={() => setCartOpen((open) => !open)}>
+            Bag ({cartCount})
+          </button>
         </div>
       </header>
 
@@ -204,10 +249,33 @@ function App() {
                     <strong>₹{product.price.toLocaleString('en-IN')}</strong>
                   </div>
                   <h3>{product.name}</h3>
-                  <button className="card-btn" onClick={addToBag}>Add to bag</button>
+                  <button className="card-btn" onClick={() => addToBag(product)}>
+                    Add to bag
+                  </button>
                 </div>
               </article>
             ))}
+          </div>
+        </section>
+
+        <section className="checkout-preview">
+          <div className="checkout-copy">
+            <span className="eyebrow">Luxury service</span>
+            <h2>Style in a box, ready for your celebrations.</h2>
+            <p>
+              From bridal gifting to festive drapery, every order includes premium packaging,
+              personalized styling notes, and careful dispatch within 48 hours.
+            </p>
+          </div>
+
+          <div className="mini-summary">
+            <div>
+              <span>Order total</span>
+              <strong>₹{total.toLocaleString('en-IN')}</strong>
+            </div>
+            <button className="primary-btn" onClick={() => setCartOpen(true)}>
+              Review cart
+            </button>
           </div>
         </section>
 
@@ -227,7 +295,10 @@ function App() {
           </div>
 
           <div className="craft-image-panel">
-            <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1000&q=80" alt="Luxury saree detail" />
+            <img
+              src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1000&q=80"
+              alt="Luxury saree detail"
+            />
           </div>
         </section>
 
@@ -262,8 +333,67 @@ function App() {
           </div>
         </div>
       </footer>
+
+      {cartOpen && <div className="drawer-backdrop" onClick={() => setCartOpen(false)} />}
+
+      <aside className={cartOpen ? 'cart-drawer open' : 'cart-drawer'}>
+        <div className="cart-header">
+          <h3>Shopping bag</h3>
+          <button className="close-btn" onClick={() => setCartOpen(false)}>
+            ×
+          </button>
+        </div>
+
+        {cart.length === 0 ? (
+          <div className="empty-cart">
+            <p>Your bag is empty.</p>
+            <button className="primary-btn" onClick={() => setCartOpen(false)}>
+              Continue shopping
+            </button>
+          </div>
+        ) : (
+          <>
+            <div className="cart-items">
+              {cart.map((item) => (
+                <div key={item.id} className="cart-item">
+                  <img src={item.image} alt={item.name} />
+                  <div className="cart-item-info">
+                    <h4>{item.name}</h4>
+                    <p>₹{item.price.toLocaleString('en-IN')}</p>
+                    <div className="qty-controls">
+                      <button onClick={() => changeQty(item.id, -1)}>-</button>
+                      <span>{item.qty}</span>
+                      <button onClick={() => changeQty(item.id, 1)}>+</button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="totals">
+              <div>
+                <span>Subtotal</span>
+                <strong>₹{subtotal.toLocaleString('en-IN')}</strong>
+              </div>
+              <div>
+                <span>Shipping</span>
+                <strong>₹{shipping.toLocaleString('en-IN')}</strong>
+              </div>
+              <div className="grand-total">
+                <span>Total</span>
+                <strong>₹{total.toLocaleString('en-IN')}</strong>
+              </div>
+            </div>
+
+            <button className="checkout-btn" onClick={handleCheckout}>
+              Proceed to checkout
+            </button>
+          </>
+        )}
+      </aside>
     </div>
   );
 }
 
 export default App;
+
